@@ -245,7 +245,7 @@ def run(name,namep):
         if un_label.shape[0] < args.max_label_num:  # update show
             img_flatten = image_flatten.copy()
             if len(color_avg) != un_label.shape[0]:
-                color_avg = [np.mean(img_flatten[im_target == label], axis=0, dtype=np.int) for label in un_label]
+                color_avg = [np.mean(img_flatten[im_target == label], axis=0, dtype=int) for label in un_label]
             for lab_id, color in enumerate(color_avg):
                 img_flatten[lab_inverse == lab_id] = color
             show = img_flatten.reshape(image.shape)
