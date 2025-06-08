@@ -174,10 +174,10 @@ def get_filelist(dir, Filelist):
     return Filelist
 
 
-def run(name,namep):
+def run(name,namep, data_set):
     start_time0 = time.time()
     args = Args()
-    pathbsd='./image\\'
+    pathbsd=f'./image\\'
     torch.cuda.manual_seed_all(1943)
     np.random.seed(1943)
     os.environ['CUDA_VISIBLE_DEVICES'] = str(args.gpu_id)  # choose GPU:0
@@ -187,7 +187,7 @@ def run(name,namep):
     softmax = nn.Softmax(dim=1)
 
     '''segmentation ML'''
-    m = loadmat('./superpixel/'+namep+'.mat');
+    m = loadmat(f'./superpixel/'+namep+'.mat');
     seglab = m["seg_lab"]
 
     seg_map=seglab
@@ -249,9 +249,9 @@ def run(name,namep):
             for lab_id, color in enumerate(color_avg):
                 img_flatten[lab_inverse == lab_id] = color
             show = img_flatten.reshape(image.shape)
-        cv2.imshow("seg_pt", show)
-        cv2.waitKey(1)
-        print(loss.item())
+        # cv2.imshow("seg_pt", show)
+        # cv2.waitKey(1)
+        # print(loss.item())
         if len(un_label) < args.min_label_num:
             break
 
@@ -267,7 +267,8 @@ def run(name,namep):
     return time1
 
 def mainf():
-    dir='./image\\'
+    data_set = 'bsd300'
+    dir=f'./image\\{data_set}\\'
     LIst=get_filelist(dir, [])
     print(LIst)
     ST=0
@@ -276,7 +277,7 @@ def mainf():
         print(name)
         namep=name[:-4]
         print(namep)
-        time=run(name,namep)
+        time=run(name,namep, data_set)
         print(time)
         ST=ST+time
     print(ST/300)
